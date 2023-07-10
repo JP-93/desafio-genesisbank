@@ -25,7 +25,7 @@
     - rate -  cotação atual da moeda
 
 - Endpoint para consulta geral:
-    - GET http://localhost:8000/exchange
+    - GET http://localhost:8000/exchanges
 
 
 
