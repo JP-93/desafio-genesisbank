@@ -8,14 +8,14 @@
 - Para que o projeto compile precisamos de um banco de dados, optei por postgreSQL
 
 # Run
-- Navegue ate a raiz do projeto e em seu terimal uso o comendo:
+- Navegue ate a raiz do projeto e em seu terimal use os comandos:
     - docker-compese build
     - docker-compose up
-Após esses comando o nosso banco de dados está pronto para ser populado.
+    - Após esses comando o nosso banco de dados está pronto para ser populado.
 
 - Navegue atá a pasta onde contém nosso main.go
-    - cmd/main. >> comando >> go run main.go
-A aplicação já está funcionado para fazer as convesões.
+    - cmd/main.go >> comando >> go run main.go
+    - A aplicação já está funcionado para fazer as convesões.
 
 - Endpoint para convesão:
     - GET http://localhost:8000/exchange/{amount}/{from}/{to}/{rate}
