@@ -1,8 +1,13 @@
-# desafio-genesisbank
+# Desafio Genesisbank
 
-<h1 align="center"> API conversão de moedas </h1>
+<h2 align="center"> API conversão de moedas </h1>
 
-# Inciando o projeto
+# Inciando projeto
+
+<p>
+    - Certifique-se que tenha o docker intalado e rodando.
+    - Pode usar o programa que preferir para fazer a chama rest.
+<p>
 
 
 
