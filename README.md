@@ -17,13 +17,15 @@ Após esses comando o nosso banco de dados está pronto para ser populado.
     - cmd/main. >> comando >> go run main.go
 A aplicação já está funcionado para fazer as convesões.
 
-- o endpoint padrão é: 
-    - http://localhost:8000/exchange/{amount}/{from}/{to}/{rate}
+- Endpoint para convesão:
+    - GET http://localhost:8000/exchange/{amount}/{from}/{to}/{rate}
     - substitua o amout pelo valor desejado
     - from - moeda origem 
     - to -  moeda destino
     - rate -  cotação atual da moeda
-    
+
+- Endpoint para consulta geral:
+    - GET http://localhost:8000/exchange
 
 
 

@@ -3,6 +3,7 @@ package handler
 import (
 	"desafio-genesisbank/database"
 	"encoding/json"
+	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -21,18 +22,29 @@ type Input struct {
 }
 
 func ExchangeValue(w http.ResponseWriter, r *http.Request) {
-	var v database.Output
-	rs := filterParam(r)
-	v.ValorConvertido = rs.exchange
-	v.SimboloMoeda = rs.Simbol
-	database.DB.Create(&v)
+	var data database.Output
+	rs, err := filterParam(r)
+	if err != nil {
+		fmt.Println("Error on filter")
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+	data.ValorConvertido = rs.exchange
+	data.SimboloMoeda = rs.Simbol
+	database.DB.Create(&data)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(v)
+	json.NewEncoder(w).Encode(data)
 
 }
 
+func GetAllValues(w http.ResponseWriter, r *http.Request) {
+	var data []database.Output
+	database.DB.Find(&data)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}
+
 // filterParm filtra os valores que estão no path da request
-func filterParam(r *http.Request) Input {
+func filterParam(r *http.Request) (Input, error) {
 	amout := chi.URLParam(r, "amout")
 	from := chi.URLParam(r, "from")
 	rate := chi.URLParam(r, "rate")
@@ -60,7 +72,7 @@ func filterParam(r *http.Request) Input {
 	return Input{
 		exchange: result,
 		Simbol:   s,
-	}
+	}, nil
 
 }
 
@@ -69,13 +81,26 @@ func exchengeBr(valueAmout, valueRate, valueTo string) (float64, string) {
 	var res float64
 	var s string
 	if valueTo == "USD" {
-		convAmout, _ := strconv.ParseFloat(valueAmout, 8)
-		convRate, _ := strconv.ParseFloat(valueRate, 8)
+		convAmout, err := strconv.ParseFloat(valueAmout, 8)
+		if err != nil {
+			panic("conversion error")
+		}
+		convRate, err := strconv.ParseFloat(valueRate, 8)
+		if err != nil {
+			panic("conversion error")
+		}
+
 		res = math.Round(convAmout / convRate)
 		s = "$"
 	} else if valueTo == "EURO" {
-		convAmout, _ := strconv.ParseFloat(valueAmout, 8)
-		convRate, _ := strconv.ParseFloat(valueRate, 8)
+		convAmout, err := strconv.ParseFloat(valueAmout, 8)
+		if err != nil {
+			panic("conversion error")
+		}
+		convRate, err := strconv.ParseFloat(valueRate, 8)
+		if err != nil {
+			panic("conversion error")
+		}
 		res = math.Round(convAmout / convRate)
 		s = "€"
 	}
@@ -84,16 +109,28 @@ func exchengeBr(valueAmout, valueRate, valueTo string) (float64, string) {
 
 // exchangeUSD converte dolar para real
 func exchangeUSD(valueAmout, valueRate string) float64 {
-	convAmout, _ := strconv.ParseFloat(valueAmout, 8)
-	convRate, _ := strconv.ParseFloat(valueRate, 8)
+	convAmout, err := strconv.ParseFloat(valueAmout, 8)
+	if err != nil {
+		panic("conversion error")
+	}
+	convRate, err := strconv.ParseFloat(valueRate, 8)
+	if err != nil {
+		panic("conversion error")
+	}
 	res := convAmout * convRate
 	return res
 }
 
 // exchangeEuro converte euro para real
 func exchangeEuro(valueAmout, valueRate string) float64 {
-	convAmout, _ := strconv.ParseFloat(valueAmout, 8)
-	convRate, _ := strconv.ParseFloat(valueRate, 8)
+	convAmout, err := strconv.ParseFloat(valueAmout, 8)
+	if err != nil {
+		panic("conversion error")
+	}
+	convRate, err := strconv.ParseFloat(valueRate, 8)
+	if err != nil {
+		panic("conversion error")
+	}
 	res := convAmout * convRate
 	return res
 }
@@ -104,13 +141,25 @@ func exchangeBTC(valueAmout, valueRate, valueTo string) (float64, string) {
 	var s string
 
 	if valueTo == "BRL" {
-		convAmout, _ := strconv.ParseFloat(valueAmout, 8)
-		convRate, _ := strconv.ParseFloat(valueRate, 8)
+		convAmout, err := strconv.ParseFloat(valueAmout, 8)
+		if err != nil {
+			panic("conversion error")
+		}
+		convRate, err := strconv.ParseFloat(valueRate, 8)
+		if err != nil {
+			panic("conversion error")
+		}
 		res = convAmout * convRate
 		s = "R$"
 	} else if valueTo == "USD" {
-		convAmout, _ := strconv.ParseFloat(valueAmout, 8)
-		convRate, _ := strconv.ParseFloat(valueRate, 8)
+		convAmout, err := strconv.ParseFloat(valueAmout, 8)
+		if err != nil {
+			panic("conversion error")
+		}
+		convRate, err := strconv.ParseFloat(valueRate, 8)
+		if err != nil {
+			panic("conversion error")
+		}
 		res = convAmout * convRate
 		s = "$"
 	}
