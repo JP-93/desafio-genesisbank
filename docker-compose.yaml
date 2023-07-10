@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+  postgres:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=genesis
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_go-data:/var/lib/postgresql/data
+  pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "genesis@email.com"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
+    ports:
+      - "54321:80"
+  
+  # app1:
+  #   build:
+  #     dockerfile: ./dockerfile
+  #     context: .
+  #   image: golang
+  #   container_name: app1
+  #   ports:
+  #     - "8000"
+  #   depends_on:
+  #     - "postgres"
